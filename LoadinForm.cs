@@ -15,6 +15,8 @@ namespace Halcyon
             {
                 timerLoading.Stop();
 
+                this.Hide();
+
                 LoginForm loginForm = new LoginForm();
                 loginForm.Show();
             }
