@@ -16,12 +16,14 @@ namespace Halcyon
         public MainForm()
         {
             InitializeComponent();
-            actions = new UIActions();  
+            actions = new UIActions();
+            panelTables.Enabled = false;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            actions.CloseApp();
+            panelTables.Enabled = true;
+            //actions.CloseApp();
         }
 
         private void buttonMinimize_Click(object sender, EventArgs e)
