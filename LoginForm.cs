@@ -13,35 +13,34 @@ namespace Halcyon
 {
     public partial class LoginForm : Form
     {
-        [DllImportAttribute("user32.dll")]
-        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int LPAR);
-        [DllImportAttribute("user32.dll")]
-        public static extern bool ReleaseCapture();
-
-        const int WM_NCLBUTTONDOWN = 0xA1;
-        const int HT_CAPTION = 0x2;
+        UIActions actions;
         public LoginForm()
         {
             InitializeComponent();
+            actions = new UIActions();
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            actions.CloseApp();
         }
 
         private void buttonMinimize_Click(object sender, EventArgs e)
         {
-            this.WindowState = FormWindowState.Minimized;
+            actions.MinimizeApp(this);
         }
 
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        private void panelMoving_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
+            actions.MoveApp(sender, e, this);
+        }
+
+        private void buttonLogIn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
         }
     }
 }
