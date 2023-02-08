@@ -17,13 +17,13 @@ namespace Halcyon
         {
             InitializeComponent();
             actions = new UIActions();
-            panelTables.Enabled = false;
+
+            panelMenu.Enabled = false;
         }
 
         private void buttonClose_Click(object sender, EventArgs e)
         {
-            panelTables.Enabled = true;
-            //actions.CloseApp();
+            actions.CloseApp();
         }
 
         private void buttonMinimize_Click(object sender, EventArgs e)
@@ -34,6 +34,11 @@ namespace Halcyon
         private void panelMoving_MouseDown(object sender, MouseEventArgs e)
         {
             actions.MoveApp(sender, e, this);
+        }
+
+        private void buttonMaximize_Click(object sender, EventArgs e)
+        {
+            actions.MaximizeApp(this);
         }
     }
 }

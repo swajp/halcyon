@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Halcyon
 {
-    internal class UIActions : Form
+    internal class UIActions
     {
         [DllImportAttribute("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int LPAR);
@@ -23,6 +23,10 @@ namespace Halcyon
         public void MinimizeApp(Form form)
         {
             form.WindowState = FormWindowState.Minimized;
+        }
+        public void MaximizeApp(Form form)
+        {
+            form.WindowState = FormWindowState.Maximized;
         }
         public void MoveApp(object sender, MouseEventArgs e, Form form)
         {
