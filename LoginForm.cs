@@ -14,6 +14,10 @@ namespace Halcyon
     public partial class LoginForm : Form
     {
         UIActions actions;
+
+        string heslo = "fdjgdfj";
+
+
         public LoginForm()
         {
             InitializeComponent();
@@ -37,10 +41,31 @@ namespace Halcyon
 
         private void buttonLogIn_Click(object sender, EventArgs e)
         {
-            this.Hide();
+            //SqlRepository.CreateUser(textBoxUsername.Text, textBoxPassword.Text);
+            var user = SqlRepository.GetUser(textBoxUsername.Text.Trim());
 
-            MainForm mainForm = new MainForm();
-            mainForm.Show();
+            if (user != null)
+            {
+                if (user.VerifyPassword(textBoxPassword.Text))
+                {
+                
+                    if (user.Role == (int)SqlRepository.Roles.ADMIN)
+                    {
+                        this.Hide();
+                        AdminForm adminForm = new AdminForm(user);
+                        adminForm.Show();
+                    }
+                    else if (user.Role == (int)SqlRepository.Roles.USER)
+                    {
+                        //UserForm userForm = new UserForm(user);
+                        //userForm.Show();
+                    }
+                 
+                }
+                return;
+            }
+            MessageBox.Show("Username or password incorrect.");
+         
         }
     }
 }

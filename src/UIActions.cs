@@ -36,5 +36,24 @@ namespace Halcyon
                 SendMessage(form.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
+
+        public void ResizeColumns(ListView listView)
+        {
+            listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
+        public void ClearData(ListView listView)
+        {
+            listView.Items.Clear();
+        }
+
+
+        public void RemoveColumns(ListView listView)
+        {
+            foreach (ColumnHeader column in listView.Columns)
+            {
+                listView.Columns.Remove(column);
+            }
+        }
     }
 }

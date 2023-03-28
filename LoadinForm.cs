@@ -9,7 +9,8 @@ namespace Halcyon
 
        private void timerLoading_Tick(object sender, EventArgs e)
         {
-            panelLoading.Width += 3;
+            //panelLoading.Width += 3;
+            panelLoading.Width += 600;
 
             if(panelLoading.Width >= 650)
             {
