@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Halcyon
 {
@@ -46,7 +47,7 @@ namespace Halcyon
             listView.Columns.Add("Id");
             listView.Columns.Add("Username");
             listView.Columns.Add("Role");
-            LoadData();
+
             actions.ResizeColumns(listView);
 
 
@@ -83,14 +84,21 @@ namespace Halcyon
             selectedEdit = SelectedEdit.User;
             label5.Text = selectedEdit.ToString();
 
-            listView.Columns.Add("Id");
-            listView.Columns.Add("Username");
-            listView.Columns.Add("Role");
+            string[] columns = { "Id", "Username", "RoleId" };
+            object[] data;
+            SqlRepository.GetData(selectedEdit.ToString(), columns, out data);
 
-            LoadData();
+            for (int i = 0; i < columns.Length; i++)
+            {
+                listView.Columns.Add(columns[i].ToString());
+                //listView.Items.Add(data[i].ToString());
+            }
+            ListViewItem listViewItem = new ListViewItem(data.Select(d => d.ToString()).ToArray());
+            listView.Items.Add(listViewItem);
 
+            listView.Refresh();
+            
             actions.ResizeColumns(listView);
-      
         }
         private void buttonManageEmployees_Click(object sender, EventArgs e)
         {
@@ -125,25 +133,6 @@ namespace Halcyon
             listView.Columns.Add("Status");
 
             actions.ResizeColumns(listView);
-        }
-
-        private void LoadData()
-        {
-            if (selectedEdit == SelectedEdit.User)
-            {
-                users = SqlRepository.GetUsers();
-                listView.Items.Clear();
-                foreach (var user in users)
-                {
-                    ListViewItem listViewItem = new ListViewItem(new string[] {
-                    user.Id.ToString(),
-                    user.Username.ToString(),
-                    user.Role.ToString()
-                });
-                    listView.Items.Add(listViewItem);
-                    listView.Refresh();
-                }
-            }
         }
 
         private void buttonChangePassword_Click(object sender, EventArgs e)

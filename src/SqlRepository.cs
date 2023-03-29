@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Data.SqlClient;
 using Halcyon.src;
+using System.Data;
 
 namespace Halcyon
 {
     public static class SqlRepository
     {
-        private static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Halcyon;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public enum Roles
         {
@@ -123,6 +124,35 @@ namespace Halcyon
                     cmd.ExecuteNonQuery();
                 }
                 conn.Close();
+            }
+        }
+
+        public static void GetData(string tableName, string[] columns, out object[] data)
+        {
+            List<object[]> results = new List<object[]>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                // sestavení dotazu na získání dat z tabulky
+                string columnsSelect = string.Join(",", columns);
+                string sql = $"SELECT {columnsSelect} FROM {tableName}";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable table = new DataTable();
+                        adapter.Fill(table);
+
+                        data = new object[table.Columns.Count];
+                        for (int i = 0; i < table.Columns.Count; i++)
+                        {
+                            data[i] = table.Rows[0][i];
+                        }
+                    }
+                }
             }
         }
     }
