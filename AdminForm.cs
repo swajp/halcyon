@@ -41,12 +41,9 @@ namespace Halcyon
 
             //First load
             selectedEdit = SelectedEdit.User;
-
+            LoadData();
+            
             actions.RemoveColumns(listView);
-
-            listView.Columns.Add("Id");
-            listView.Columns.Add("Username");
-            listView.Columns.Add("Role");
 
             actions.ResizeColumns(listView);
 
@@ -78,10 +75,27 @@ namespace Halcyon
 
         private void buttonManageUsers_Click(object sender, EventArgs e)
         {
+            selectedEdit = SelectedEdit.User;
+            LoadData();
+        }
+      
+        private void buttonManageEmployees_Click(object sender, EventArgs e)
+        {
+            selectedEdit = SelectedEdit.Employee;
+            LoadData();
+        }
+
+        private void buttonManageContracts_Click(object sender, EventArgs e)
+        {
+            selectedEdit = SelectedEdit.Contract;
+            LoadData();
+        }
+        
+        private void LoadData()
+        {
             actions.ClearData(listView);
             actions.RemoveColumns(listView);
 
-            selectedEdit = SelectedEdit.User;
             label5.Text = selectedEdit.ToString();
 
             string[] columns = { "Id", "Username", "RoleId" };
@@ -91,50 +105,19 @@ namespace Halcyon
             for (int i = 0; i < columns.Length; i++)
             {
                 listView.Columns.Add(columns[i].ToString());
-                //listView.Items.Add(data[i].ToString());
             }
-            ListViewItem listViewItem = new ListViewItem(data.Select(d => d.ToString()).ToArray());
-            listView.Items.Add(listViewItem);
+
+            foreach (var dat in data)
+            {
+                ListViewItem listViewItem = new ListViewItem(dat.Select(d => d.ToString()).ToArray());
+                listView.Items.Add(listViewItem);
+            }
 
             listView.Refresh();
-            
-            actions.ResizeColumns(listView);
-        }
-        private void buttonManageEmployees_Click(object sender, EventArgs e)
-        {
-            actions.ClearData(listView);
-            actions.RemoveColumns(listView);
-
-            selectedEdit = SelectedEdit.Employee;
-            label5.Text = selectedEdit.ToString();
-
-            listView.Columns.Add("Id");
-            listView.Columns.Add("First Name");
-            listView.Columns.Add("Last Name");
-            listView.Columns.Add("Birthday");
-            listView.Columns.Add("Email");
-            listView.Columns.Add("Phonenumber");
 
             actions.ResizeColumns(listView);
         }
-
-        private void buttonManageContracts_Click(object sender, EventArgs e)
-        {
-            actions.ClearData(listView);
-            actions.RemoveColumns(listView);
-
-            selectedEdit = SelectedEdit.Contract;
-            label5.Text = selectedEdit.ToString();
-
-            listView.Columns.Add("Id");
-            listView.Columns.Add("Name");
-            listView.Columns.Add("Description");
-            listView.Columns.Add("Worker");
-            listView.Columns.Add("Status");
-
-            actions.ResizeColumns(listView);
-        }
-
+        
         private void buttonChangePassword_Click(object sender, EventArgs e)
         {
             panelProfile.Visible = false;
