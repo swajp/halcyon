@@ -50,12 +50,14 @@
             this.buttonFinishChange = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.buttonManageWorks = new System.Windows.Forms.Button();
             this.buttonManageContracts = new System.Windows.Forms.Button();
             this.buttonManageEmployees = new System.Windows.Forms.Button();
             this.buttonManageUsers = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.listView = new System.Windows.Forms.ListView();
             this.panelEdit = new System.Windows.Forms.Panel();
+            this.buttonDownload = new System.Windows.Forms.Button();
             this.buttonEditRecord = new System.Windows.Forms.Button();
             this.buttonRemoveRecord = new System.Windows.Forms.Button();
             this.buttonAddRecord = new System.Windows.Forms.Button();
@@ -312,14 +314,25 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panel2.Controls.Add(this.buttonManageWorks);
             this.panel2.Controls.Add(this.buttonManageContracts);
             this.panel2.Controls.Add(this.buttonManageEmployees);
             this.panel2.Controls.Add(this.buttonManageUsers);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Location = new System.Drawing.Point(862, 203);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(205, 145);
+            this.panel2.Size = new System.Drawing.Size(205, 162);
             this.panel2.TabIndex = 3;
+            // 
+            // buttonManageWorks
+            // 
+            this.buttonManageWorks.Location = new System.Drawing.Point(13, 131);
+            this.buttonManageWorks.Name = "buttonManageWorks";
+            this.buttonManageWorks.Size = new System.Drawing.Size(170, 23);
+            this.buttonManageWorks.TabIndex = 8;
+            this.buttonManageWorks.Text = "Manage work";
+            this.buttonManageWorks.UseVisualStyleBackColor = true;
+            this.buttonManageWorks.Click += new System.EventHandler(this.buttonManageWorks_Click);
             // 
             // buttonManageContracts
             // 
@@ -377,14 +390,25 @@
             // panelEdit
             // 
             this.panelEdit.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.panelEdit.Controls.Add(this.buttonDownload);
             this.panelEdit.Controls.Add(this.buttonEditRecord);
             this.panelEdit.Controls.Add(this.buttonRemoveRecord);
             this.panelEdit.Controls.Add(this.buttonAddRecord);
             this.panelEdit.Controls.Add(this.label4);
-            this.panelEdit.Location = new System.Drawing.Point(862, 354);
+            this.panelEdit.Location = new System.Drawing.Point(862, 371);
             this.panelEdit.Name = "panelEdit";
-            this.panelEdit.Size = new System.Drawing.Size(205, 256);
+            this.panelEdit.Size = new System.Drawing.Size(205, 239);
             this.panelEdit.TabIndex = 8;
+            // 
+            // buttonDownload
+            // 
+            this.buttonDownload.Location = new System.Drawing.Point(13, 131);
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(170, 23);
+            this.buttonDownload.TabIndex = 8;
+            this.buttonDownload.Text = "Download CSV";
+            this.buttonDownload.UseVisualStyleBackColor = true;
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
             // buttonEditRecord
             // 
@@ -403,6 +427,7 @@
             this.buttonRemoveRecord.TabIndex = 6;
             this.buttonRemoveRecord.Text = "Remove record";
             this.buttonRemoveRecord.UseVisualStyleBackColor = true;
+            this.buttonRemoveRecord.Click += new System.EventHandler(this.buttonRemoveRecord_Click);
             // 
             // buttonAddRecord
             // 
@@ -488,5 +513,7 @@
         private Button buttonFinishChange;
         private Label label11;
         private Button buttonLogout;
+        private Button buttonManageWorks;
+        private Button buttonDownload;
     }
 }

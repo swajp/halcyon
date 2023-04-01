@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using System.Data.SqlClient;
 using Halcyon.src;
 using System.Data;
+using System.Text.RegularExpressions;
+using System.IO;
 
 namespace Halcyon
 {
@@ -126,33 +128,7 @@ namespace Halcyon
                 conn.Close();
             }
         }
-
-        public static void GetData(string tableName, string[] columns, out object[] data)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
-
-                string columnsSelect = string.Join(",", columns);
-                string sql = $"SELECT {columnsSelect} FROM {tableName}";
-
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
-                    {
-                        DataTable table = new DataTable();
-                        adapter.Fill(table);
-
-                        data = new object[table.Columns.Count];
-                        for (int i = 0; i < table.Rows.Count; i++)
-                        {
-                            data[i] = table.Rows[i].ItemArray;
-                        }
-                    }
-                }
-            }
-        }
-        public static void FillListView(string tableName, List<string> columnNames, ListView listView)
+        public static void GetData(string tableName, List<string> columnNames, ListView listView)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -170,7 +146,8 @@ namespace Halcyon
 
                         foreach (string columnName in columnNames)
                         {
-                            listView.Columns.Add(columnName, -2, HorizontalAlignment.Left);
+                            string neco = Regex.Replace(columnName, "(\\B[A-Z])", " $1");
+                            listView.Columns.Add(neco, -2, HorizontalAlignment.Left);
                         }
 
                         while (reader.Read())
@@ -187,6 +164,48 @@ namespace Halcyon
                     listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                     listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 }
+            }
+        }
+        public static void ExportListViewToCsv(ListView listView, string filePath)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                for (int i = 0; i < listView.Columns.Count; i++)
+                {
+                    sw.Write(listView.Columns[i].Text);
+                    if (i < listView.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.WriteLine();
+
+                foreach (ListViewItem item in listView.Items)
+                {
+                    for (int i = 0; i < item.SubItems.Count; i++)
+                    {
+                        sw.Write(item.SubItems[i].Text);
+                        if (i < item.SubItems.Count - 1)
+                        {
+                            sw.Write(",");
+                        }
+                    }
+                    sw.WriteLine();
+                }
+            }
+        }
+        public static void DeleteRecord(string tableName,string columnName,string id)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(connectionString))
+            {
+                sqlConnection.Open();
+                using (SqlCommand sqlCommand = new SqlCommand())
+                {
+                    sqlCommand.Connection = sqlConnection;
+                    sqlCommand.CommandText = $"DELETE FROM {tableName} WHERE {columnName}={id}";
+                    sqlCommand.ExecuteNonQuery();
+                }
+                sqlConnection.Close();
             }
         }
     }

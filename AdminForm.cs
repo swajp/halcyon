@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using System.Text.RegularExpressions;
 
 namespace Halcyon
 {
@@ -25,6 +24,7 @@ namespace Halcyon
             public const string User = "Users";
             public const string Employee = "Employees";
             public const string Contract = "Contracts";
+            public const string Work = "Works";
         }
 
         string selectedEdit;
@@ -41,7 +41,7 @@ namespace Halcyon
 
             selectedEdit = SelectedEdit.User;
             List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
-            SqlRepository.FillListView("Users", columnNames,listView);
+            SqlRepository.GetData("Users", columnNames,listView);
 
 
         }
@@ -69,24 +69,51 @@ namespace Halcyon
         private void buttonManageUsers_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.User;
-            List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
-            SqlRepository.FillListView("Users", columnNames, listView);
+            LoadBySelect();
         }
       
         private void buttonManageEmployees_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Employee;
-            List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
-            SqlRepository.FillListView("Employees", columnNames, listView);
+            LoadBySelect();
         }
-
+        private void buttonManageWorks_Click(object sender, EventArgs e)
+        {
+            selectedEdit = SelectedEdit.Work;
+            LoadBySelect();
+        }
         private void buttonManageContracts_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Contract;
-            //LoadData(new string[] { "" });
+            //LoadBySelect();
 
         }
-        
+        private void LoadBySelect()
+        {
+
+            if (selectedEdit == SelectedEdit.User)
+            {
+                List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
+                SqlRepository.GetData("Users", columnNames, listView);
+            }
+            else if (selectedEdit == SelectedEdit.Employee)
+            {
+                List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
+                SqlRepository.GetData("Employees", columnNames, listView);
+            }
+            else if (selectedEdit == SelectedEdit.Contract)
+            {
+                //List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
+                //SqlRepository.GetData("Employees", columnNames, listView);
+
+            }
+            else if (selectedEdit == SelectedEdit.Work)
+            {
+                selectedEdit = SelectedEdit.Work;
+                List<string> columnNames = new List<string> { "WorkId", "Name", "Description" };
+                SqlRepository.GetData("Works", columnNames, listView);
+            }
+        }
         private void buttonChangePassword_Click(object sender, EventArgs e)
         {
             panelProfile.Visible = false;
@@ -144,19 +171,52 @@ namespace Halcyon
                 string[] comboBoxItems = { "User", "Admin" };
                 addEmployee.GenerateForm(controlNames, controlTypes, comboBoxItems);
             }
-            if (selectedEdit == SelectedEdit.Employee)
+            else if (selectedEdit == SelectedEdit.Employee)
             {
                 string[] controlNames = { "JobG", "FirstNameG", "LastnameG", "BirthdateG", "Phone NumberG", "Close", "Add" };
                 string[] controlTypes = { "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "Button", "Button" };
                 addEmployee.GenerateForm(controlNames, controlTypes, null);
             }
-            if (selectedEdit == SelectedEdit.Contract)
+            else if (selectedEdit == SelectedEdit.Contract)
             {
                 string[] controlNames = { "Contract NameG", "DescriptionG", "StatusG", "WorkerG", "TimeG", "Close", "Add" };
                 string[] controlTypes = { "TextBox", "TextBox", "TextBox", "TextBox", "DateTimePicker", "Button", "Button" };
                 addEmployee.GenerateForm(controlNames, controlTypes, null);
             }
+            else if (selectedEdit == SelectedEdit.Work)
+            {
+                string[] controlNames = { "Work NameG", "DescriptionG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "Button", "Button" };
+                addEmployee.GenerateForm(controlNames, controlTypes, null);
+            }
             addEmployee.Show();
+        }
+
+        private void buttonDownload_Click(object sender, EventArgs e)
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+            string fileName = selectedEdit.ToString()+".csv";
+            string filePath = Path.Combine(desktopPath, fileName);
+            SqlRepository.ExportListViewToCsv(listView, filePath);
+
+        }
+        private void buttonRemoveRecord_Click(object sender, EventArgs e)
+        {
+            if (listView.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Row isn't selected");
+            }
+            else
+            {
+                var selectedRow = listView.SelectedItems[0];
+                var columnName = listView.Columns[0].Text;
+                string selectedValue = selectedRow.SubItems[0].Text;
+                selectedValue = columnName.Replace(" ", "");
+                var id = selectedRow.SubItems[0].Text;
+
+                SqlRepository.DeleteRecord(selectedEdit, selectedValue,id);
+                listView.SelectedItems[0].Remove();
+            }
         }
     }
 }
