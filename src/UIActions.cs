@@ -46,14 +46,16 @@ namespace Halcyon
         {
             listView.Items.Clear();
         }
-
-
         public void RemoveColumns(ListView listView)
         {
             foreach (ColumnHeader column in listView.Columns)
             {
                 listView.Columns.Remove(column);
             }
+        }
+        public void CancelForm(Form form)
+        {
+            form.Hide();
         }
     }
 }

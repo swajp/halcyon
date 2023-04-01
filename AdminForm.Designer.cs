@@ -35,6 +35,7 @@
             this.panelMoving = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.panelProfile = new System.Windows.Forms.Panel();
+            this.buttonLogout = new System.Windows.Forms.Button();
             this.buttonChangePassword = new System.Windows.Forms.Button();
             this.labelRole = new System.Windows.Forms.Label();
             this.labelUsername = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@
             this.buttonRemoveRecord = new System.Windows.Forms.Button();
             this.buttonAddRecord = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.buttonLogout = new System.Windows.Forms.Button();
             this.panel4.SuspendLayout();
             this.panelMoving.SuspendLayout();
             this.panelProfile.SuspendLayout();
@@ -163,6 +163,16 @@
             this.panelProfile.Name = "panelProfile";
             this.panelProfile.Size = new System.Drawing.Size(205, 137);
             this.panelProfile.TabIndex = 2;
+            // 
+            // buttonLogout
+            // 
+            this.buttonLogout.Location = new System.Drawing.Point(155, 11);
+            this.buttonLogout.Name = "buttonLogout";
+            this.buttonLogout.Size = new System.Drawing.Size(28, 23);
+            this.buttonLogout.TabIndex = 6;
+            this.buttonLogout.Text = "🚪";
+            this.buttonLogout.UseVisualStyleBackColor = true;
+            this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
             // 
             // buttonChangePassword
             // 
@@ -402,6 +412,7 @@
             this.buttonAddRecord.TabIndex = 5;
             this.buttonAddRecord.Text = "Add record";
             this.buttonAddRecord.UseVisualStyleBackColor = true;
+            this.buttonAddRecord.Click += new System.EventHandler(this.buttonAddRecord_Click);
             // 
             // label4
             // 
@@ -413,16 +424,6 @@
             this.label4.TabIndex = 0;
             this.label4.Text = "Records Edit";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // buttonLogout
-            // 
-            this.buttonLogout.Location = new System.Drawing.Point(155, 11);
-            this.buttonLogout.Name = "buttonLogout";
-            this.buttonLogout.Size = new System.Drawing.Size(28, 23);
-            this.buttonLogout.TabIndex = 6;
-            this.buttonLogout.Text = "🚪";
-            this.buttonLogout.UseVisualStyleBackColor = true;
-            this.buttonLogout.Click += new System.EventHandler(this.buttonLogout_Click);
             // 
             // AdminForm
             // 

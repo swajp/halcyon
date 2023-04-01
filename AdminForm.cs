@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Text.RegularExpressions;
 
 namespace Halcyon
 {
@@ -41,8 +42,9 @@ namespace Halcyon
 
             //First load
             selectedEdit = SelectedEdit.User;
-            LoadData();
-            
+            string[] columns = new string[] { "Id", "Username", "RoleId" };
+            LoadData(columns);
+
             actions.RemoveColumns(listView);
 
             actions.ResizeColumns(listView);
@@ -76,40 +78,46 @@ namespace Halcyon
         private void buttonManageUsers_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.User;
-            LoadData();
+            string[] columns = new string[] { "Id", "Username", "RoleId" };
+            LoadData(columns);
         }
       
         private void buttonManageEmployees_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Employee;
-            LoadData();
+            LoadData(new string[] { "Id, Job, Firstname, Lastname, Birthdate, Email, PhoneNumber" });
         }
 
         private void buttonManageContracts_Click(object sender, EventArgs e)
         {
-            selectedEdit = SelectedEdit.Contract;
-            LoadData();
+            //selectedEdit = SelectedEdit.Contract;
+            //LoadData();
+            
         }
         
-        private void LoadData()
+        private void LoadData(string[] columns)
         {
             actions.ClearData(listView);
             actions.RemoveColumns(listView);
 
             label5.Text = selectedEdit.ToString();
 
-            string[] columns = { "Id", "Username", "RoleId" };
             object[] data;
             SqlRepository.GetData(selectedEdit.ToString(), columns, out data);
 
             for (int i = 0; i < columns.Length; i++)
             {
+                columns[i] = Regex.Replace(columns[i], "(\\B[A-Z])", " $1");
                 listView.Columns.Add(columns[i].ToString());
             }
-
-            foreach (var dat in data)
+            /*for (int i = 0; i < columns.Length; i++)
             {
-                ListViewItem listViewItem = new ListViewItem(dat.Select(d => d.ToString()).ToArray());
+                listView.Columns.Add(columns[i].ToString());
+            }*/
+            
+            foreach (object dat in data)
+            {
+                ListViewItem listViewItem = new ListViewItem(data.Select(d => d.ToString()).ToArray());
                 listView.Items.Add(listViewItem);
             }
 
@@ -160,6 +168,15 @@ namespace Halcyon
         private void buttonLogout_Click(object sender, EventArgs e)
         {
            
+        }
+
+        private void buttonAddRecord_Click(object sender, EventArgs e)
+        {
+            if (selectedEdit == SelectedEdit.User)
+            {
+                AddUser addUser = new AddUser();
+                addUser.Show();
+            }
         }
     }
 }

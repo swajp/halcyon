@@ -48,7 +48,6 @@ namespace Halcyon
             {
                 if (user.VerifyPassword(textBoxPassword.Text))
                 {
-                
                     if (user.Role == (int)SqlRepository.Roles.ADMIN)
                     {
                         this.Hide();

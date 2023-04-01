@@ -12,7 +12,7 @@ namespace Halcyon
 {
     public static class SqlRepository
     {
-        private static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Database;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        private static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Halcyon;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public enum Roles
         {
@@ -129,13 +129,10 @@ namespace Halcyon
 
         public static void GetData(string tableName, string[] columns, out object[] data)
         {
-            List<object[]> results = new List<object[]>();
-
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                // sestavení dotazu na získání dat z tabulky
                 string columnsSelect = string.Join(",", columns);
                 string sql = $"SELECT {columnsSelect} FROM {tableName}";
 
@@ -147,7 +144,7 @@ namespace Halcyon
                         adapter.Fill(table);
 
                         data = new object[table.Columns.Count];
-                        for (int i = 0; i < table.Columns.Count; i++)
+                        for (int i = 0; i < table.Rows.Count; i++)
                         {
                             data[i] = table.Rows[0][i];
                         }
