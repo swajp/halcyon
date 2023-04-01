@@ -32,7 +32,6 @@ namespace Halcyon
         {
             InitializeComponent();
 
-     
             actions = new UIActions();
 
             //Load labels
@@ -40,9 +39,9 @@ namespace Halcyon
             labelRole.Text = "Admin";
 
 
-            //First load
             selectedEdit = SelectedEdit.User;
-            LoadData(new string[] { "Id", "Username", "RoleId" });
+            List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
+            SqlRepository.FillListView("Users", columnNames,listView);
 
 
         }
@@ -70,47 +69,22 @@ namespace Halcyon
         private void buttonManageUsers_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.User;
-            LoadData(new string[] { "Id", "Username", "RoleId" });
+            List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
+            SqlRepository.FillListView("Users", columnNames, listView);
         }
       
         private void buttonManageEmployees_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Employee;
-            //LoadData(new string[] { "Id, Job, Firstname, Lastname, Birthdate, Email, PhoneNumber" });
+            List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
+            SqlRepository.FillListView("Employees", columnNames, listView);
         }
 
         private void buttonManageContracts_Click(object sender, EventArgs e)
         {
-            //selectedEdit = SelectedEdit.Contract;
-            //LoadData();
-            
-        }
-        
-        private void LoadData(string[] columns)
-        {
-            actions.ClearData(listView);
-            actions.RemoveColumns(listView);
+            selectedEdit = SelectedEdit.Contract;
+            //LoadData(new string[] { "" });
 
-            label5.Text = selectedEdit.ToString();
-
-            object[] data;
-            SqlRepository.GetData(selectedEdit.ToString(), columns, out data);
-
-            for (int i = 0; i < columns.Length; i++)
-            {
-                columns[i] = Regex.Replace(columns[i], "(\\B[A-Z])", " $1");
-                listView.Columns.Add(columns[i].ToString());
-            }
-            
-            foreach (object dat in data)
-            {
-                ListViewItem listViewItem = new ListViewItem(data.Select(d => d.ToString()).ToArray());
-                listView.Items.Add(listViewItem);
-            }
-
-            listView.Refresh();
-
-            actions.ResizeColumns(listView);
         }
         
         private void buttonChangePassword_Click(object sender, EventArgs e)
@@ -154,21 +128,35 @@ namespace Halcyon
 
         private void buttonLogout_Click(object sender, EventArgs e)
         {
-           
+            this.Hide();
+            LoadinForm loadinForm = new LoadinForm();
+            loadinForm.Show();
         }
 
         private void buttonAddRecord_Click(object sender, EventArgs e)
         {
+            AddForm addEmployee = new AddForm(selectedEdit.ToString());
+
             if (selectedEdit == SelectedEdit.User)
             {
-                AddUser addUser = new AddUser();
-                addUser.Show();
+                string[] controlNames = { "UsernameG", "PasswordG", "PasswordAgainG", "RoleG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "ComboBox", "Button", "Button" };
+                string[] comboBoxItems = { "User", "Admin" };
+                addEmployee.GenerateForm(controlNames, controlTypes, comboBoxItems);
             }
             if (selectedEdit == SelectedEdit.Employee)
             {
-                AddEmployee addEmployee = new AddEmployee(selectedEdit.ToString());
-                addEmployee.Show();
+                string[] controlNames = { "JobG", "FirstNameG", "LastnameG", "BirthdateG", "Phone NumberG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "Button", "Button" };
+                addEmployee.GenerateForm(controlNames, controlTypes, null);
             }
+            if (selectedEdit == SelectedEdit.Contract)
+            {
+                string[] controlNames = { "Contract NameG", "DescriptionG", "StatusG", "WorkerG", "TimeG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "TextBox", "DateTimePicker", "Button", "Button" };
+                addEmployee.GenerateForm(controlNames, controlTypes, null);
+            }
+            addEmployee.Show();
         }
     }
 }

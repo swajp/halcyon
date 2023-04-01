@@ -1,6 +1,6 @@
 ﻿namespace Halcyon
 {
-    partial class AddEmployee
+    partial class AddForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,6 +36,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(453, 411);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AddEmployee";
             this.Text = "AddEmployee";
             this.ResumeLayout(false);

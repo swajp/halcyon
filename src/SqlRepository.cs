@@ -146,9 +146,46 @@ namespace Halcyon
                         data = new object[table.Columns.Count];
                         for (int i = 0; i < table.Rows.Count; i++)
                         {
-                            data[i] = table.Rows[i][i];
+                            data[i] = table.Rows[i].ItemArray;
                         }
                     }
+                }
+            }
+        }
+        public static void FillListView(string tableName, List<string> columnNames, ListView listView)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+
+                string query = "SELECT " + string.Join(", ", columnNames.ToArray()) + " FROM " + tableName;
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        listView.Items.Clear();
+                        listView.Columns.Clear();
+
+                        foreach (string columnName in columnNames)
+                        {
+                            listView.Columns.Add(columnName, -2, HorizontalAlignment.Left);
+                        }
+
+                        while (reader.Read())
+                        {
+                            string[] row = new string[columnNames.Count];
+                            for (int i = 0; i < columnNames.Count; i++)
+                            {
+                                row[i] = reader[columnNames[i]].ToString();
+                            }
+                            ListViewItem item = new ListViewItem(row);
+                            listView.Items.Add(item);
+                        }
+                    }
+                    listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                    listView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
                 }
             }
         }
