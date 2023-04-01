@@ -17,6 +17,8 @@ namespace Halcyon
         {
             InitializeComponent();
             actions = new UIActions();
+
+            comboBoxRole.SelectedItem = "User";
         }
 
         private void button1_Click(object sender, EventArgs e)

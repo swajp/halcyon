@@ -29,12 +29,14 @@
         private void InitializeComponent()
         {
             this.panelProfile = new System.Windows.Forms.Panel();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.comboBoxRole = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxPasswordAgain = new System.Windows.Forms.TextBox();
+            this.textBoxPassword = new System.Windows.Forms.TextBox();
+            this.textBoxUsername = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonChangePassword = new System.Windows.Forms.Button();
+            this.buttonCreateUser = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -44,40 +46,64 @@
             // panelProfile
             // 
             this.panelProfile.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panelProfile.Controls.Add(this.textBox3);
-            this.panelProfile.Controls.Add(this.textBox2);
-            this.panelProfile.Controls.Add(this.textBox1);
+            this.panelProfile.Controls.Add(this.comboBoxRole);
+            this.panelProfile.Controls.Add(this.label5);
+            this.panelProfile.Controls.Add(this.textBoxPasswordAgain);
+            this.panelProfile.Controls.Add(this.textBoxPassword);
+            this.panelProfile.Controls.Add(this.textBoxUsername);
             this.panelProfile.Controls.Add(this.label4);
             this.panelProfile.Controls.Add(this.buttonCancel);
-            this.panelProfile.Controls.Add(this.buttonChangePassword);
+            this.panelProfile.Controls.Add(this.buttonCreateUser);
             this.panelProfile.Controls.Add(this.label3);
             this.panelProfile.Controls.Add(this.label2);
             this.panelProfile.Controls.Add(this.label1);
             this.panelProfile.Location = new System.Drawing.Point(12, 12);
             this.panelProfile.Name = "panelProfile";
-            this.panelProfile.Size = new System.Drawing.Size(234, 203);
+            this.panelProfile.Size = new System.Drawing.Size(234, 220);
             this.panelProfile.TabIndex = 3;
             // 
-            // textBox3
+            // comboBoxRole
             // 
-            this.textBox3.Location = new System.Drawing.Point(110, 114);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 23);
-            this.textBox3.TabIndex = 10;
+            this.comboBoxRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxRole.FormattingEnabled = true;
+            this.comboBoxRole.Items.AddRange(new object[] {
+            "Admin",
+            "User"});
+            this.comboBoxRole.Location = new System.Drawing.Point(110, 143);
+            this.comboBoxRole.Name = "comboBoxRole";
+            this.comboBoxRole.Size = new System.Drawing.Size(100, 23);
+            this.comboBoxRole.TabIndex = 12;
             // 
-            // textBox2
+            // label5
             // 
-            this.textBox2.Location = new System.Drawing.Point(110, 85);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 23);
-            this.textBox2.TabIndex = 9;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 146);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(33, 15);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Role:";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // textBox1
+            // textBoxPasswordAgain
             // 
-            this.textBox1.Location = new System.Drawing.Point(110, 56);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 23);
-            this.textBox1.TabIndex = 8;
+            this.textBoxPasswordAgain.Location = new System.Drawing.Point(110, 114);
+            this.textBoxPasswordAgain.Name = "textBoxPasswordAgain";
+            this.textBoxPasswordAgain.Size = new System.Drawing.Size(100, 23);
+            this.textBoxPasswordAgain.TabIndex = 10;
+            // 
+            // textBoxPassword
+            // 
+            this.textBoxPassword.Location = new System.Drawing.Point(110, 85);
+            this.textBoxPassword.Name = "textBoxPassword";
+            this.textBoxPassword.Size = new System.Drawing.Size(100, 23);
+            this.textBoxPassword.TabIndex = 9;
+            // 
+            // textBoxUsername
+            // 
+            this.textBoxUsername.Location = new System.Drawing.Point(110, 56);
+            this.textBoxUsername.Name = "textBoxUsername";
+            this.textBoxUsername.Size = new System.Drawing.Size(100, 23);
+            this.textBoxUsername.TabIndex = 8;
             // 
             // label4
             // 
@@ -91,7 +117,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(64, 153);
+            this.buttonCancel.Location = new System.Drawing.Point(64, 182);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(70, 23);
             this.buttonCancel.TabIndex = 6;
@@ -99,14 +125,14 @@
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // buttonChangePassword
+            // buttonCreateUser
             // 
-            this.buttonChangePassword.Location = new System.Drawing.Point(140, 153);
-            this.buttonChangePassword.Name = "buttonChangePassword";
-            this.buttonChangePassword.Size = new System.Drawing.Size(70, 23);
-            this.buttonChangePassword.TabIndex = 5;
-            this.buttonChangePassword.Text = "Add";
-            this.buttonChangePassword.UseVisualStyleBackColor = true;
+            this.buttonCreateUser.Location = new System.Drawing.Point(140, 182);
+            this.buttonCreateUser.Name = "buttonCreateUser";
+            this.buttonCreateUser.Size = new System.Drawing.Size(70, 23);
+            this.buttonCreateUser.TabIndex = 5;
+            this.buttonCreateUser.Text = "Add";
+            this.buttonCreateUser.UseVisualStyleBackColor = true;
             // 
             // label3
             // 
@@ -143,7 +169,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(258, 227);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(258, 244);
             this.Controls.Add(this.panelProfile);
             this.Name = "AddUser";
             this.Text = "AddUser";
@@ -156,14 +183,16 @@
         #endregion
 
         private Panel panelProfile;
-        private Button buttonChangePassword;
+        private Button buttonCreateUser;
         private Label label3;
         private Label label2;
         private Label label1;
-        private TextBox textBox3;
-        private TextBox textBox2;
-        private TextBox textBox1;
+        private TextBox textBoxPasswordAgain;
+        private TextBox textBoxPassword;
+        private TextBox textBoxUsername;
         private Label label4;
         private Button buttonCancel;
+        private ComboBox comboBoxRole;
+        private Label label5;
     }
 }

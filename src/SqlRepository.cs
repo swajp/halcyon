@@ -146,7 +146,7 @@ namespace Halcyon
                         data = new object[table.Columns.Count];
                         for (int i = 0; i < table.Rows.Count; i++)
                         {
-                            data[i] = table.Rows[0][i];
+                            data[i] = table.Rows[i][i];
                         }
                     }
                 }

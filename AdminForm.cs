@@ -42,16 +42,8 @@ namespace Halcyon
 
             //First load
             selectedEdit = SelectedEdit.User;
-            string[] columns = new string[] { "Id", "Username", "RoleId" };
-            LoadData(columns);
+            LoadData(new string[] { "Id", "Username", "RoleId" });
 
-            actions.RemoveColumns(listView);
-
-            actions.ResizeColumns(listView);
-
-
-            label5.Text = selectedEdit.ToString();
-            //Panels
 
         }
 
@@ -78,14 +70,13 @@ namespace Halcyon
         private void buttonManageUsers_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.User;
-            string[] columns = new string[] { "Id", "Username", "RoleId" };
-            LoadData(columns);
+            LoadData(new string[] { "Id", "Username", "RoleId" });
         }
       
         private void buttonManageEmployees_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Employee;
-            LoadData(new string[] { "Id, Job, Firstname, Lastname, Birthdate, Email, PhoneNumber" });
+            //LoadData(new string[] { "Id, Job, Firstname, Lastname, Birthdate, Email, PhoneNumber" });
         }
 
         private void buttonManageContracts_Click(object sender, EventArgs e)
@@ -110,10 +101,6 @@ namespace Halcyon
                 columns[i] = Regex.Replace(columns[i], "(\\B[A-Z])", " $1");
                 listView.Columns.Add(columns[i].ToString());
             }
-            /*for (int i = 0; i < columns.Length; i++)
-            {
-                listView.Columns.Add(columns[i].ToString());
-            }*/
             
             foreach (object dat in data)
             {
@@ -176,6 +163,11 @@ namespace Halcyon
             {
                 AddUser addUser = new AddUser();
                 addUser.Show();
+            }
+            if (selectedEdit == SelectedEdit.Employee)
+            {
+                AddEmployee addEmployee = new AddEmployee(selectedEdit.ToString());
+                addEmployee.Show();
             }
         }
     }
