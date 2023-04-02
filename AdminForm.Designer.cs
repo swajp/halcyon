@@ -418,6 +418,7 @@
             this.buttonEditRecord.TabIndex = 7;
             this.buttonEditRecord.Text = "Edit record";
             this.buttonEditRecord.UseVisualStyleBackColor = true;
+            this.buttonEditRecord.Click += new System.EventHandler(this.buttonEditRecord_Click);
             // 
             // buttonRemoveRecord
             // 

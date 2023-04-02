@@ -45,7 +45,10 @@ namespace Halcyon
 
 
         }
-
+        public AdminForm()
+        {
+            selectedEdit = SelectedEdit.User;
+        }
         private void buttonClose_Click(object sender, EventArgs e)
         {
             actions.CloseApp();
@@ -88,7 +91,7 @@ namespace Halcyon
             //LoadBySelect();
 
         }
-        private void LoadBySelect()
+        public void LoadBySelect()
         {
 
             if (selectedEdit == SelectedEdit.User)
@@ -162,36 +165,68 @@ namespace Halcyon
 
         private void buttonAddRecord_Click(object sender, EventArgs e)
         {
-            AddForm addEmployee = new AddForm(selectedEdit.ToString());
+            AddForm addForm = new AddForm(selectedEdit.ToString());
 
             if (selectedEdit == SelectedEdit.User)
             {
-                string[] controlNames = { "UsernameG", "PasswordG", "PasswordAgainG", "RoleG", "Close", "Add" };
-                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "ComboBox", "Button", "Button" };
+                string[] controlNames = { "UsernameG", "PasswordG", "RoleG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "ComboBox", "Button", "Button" };
                 string[] comboBoxItems = { "User", "Admin" };
-                addEmployee.GenerateForm(controlNames, controlTypes, comboBoxItems);
+                addForm.GenerateForm(controlNames, controlTypes, comboBoxItems);
             }
             else if (selectedEdit == SelectedEdit.Employee)
             {
-                string[] controlNames = { "JobG", "FirstNameG", "LastnameG", "BirthdateG", "Phone NumberG", "Close", "Add" };
-                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "Button", "Button" };
-                addEmployee.GenerateForm(controlNames, controlTypes, null);
+                string[] controlNames = { "JobG", "FirstNameG", "LastnameG", "BirthDayG", "EmailG", "Phone NumberG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "TextBox", "Button", "Button" };
+                addForm.GenerateForm(controlNames, controlTypes, null);
             }
             else if (selectedEdit == SelectedEdit.Contract)
             {
                 string[] controlNames = { "Contract NameG", "DescriptionG", "StatusG", "WorkerG", "TimeG", "Close", "Add" };
                 string[] controlTypes = { "TextBox", "TextBox", "TextBox", "TextBox", "DateTimePicker", "Button", "Button" };
-                addEmployee.GenerateForm(controlNames, controlTypes, null);
+                addForm.GenerateForm(controlNames, controlTypes, null);
             }
             else if (selectedEdit == SelectedEdit.Work)
             {
                 string[] controlNames = { "Work NameG", "DescriptionG", "Close", "Add" };
                 string[] controlTypes = { "TextBox", "TextBox", "Button", "Button" };
-                addEmployee.GenerateForm(controlNames, controlTypes, null);
+                addForm.GenerateForm(controlNames, controlTypes, null);
             }
-            addEmployee.Show();
+            addForm.Show();
         }
+        private void buttonEditRecord_Click(object sender, EventArgs e)
+        {
+            EditForm editForm = new EditForm(selectedEdit.ToString());
 
+            List<string> rowData = new List<string>();
+            ListViewItem selectedItem = listView.SelectedItems[0];
+
+            foreach (ListViewItem.ListViewSubItem subItem in selectedItem.SubItems)
+            {
+                rowData.Add(subItem.Text);
+            }
+
+            if (selectedEdit == SelectedEdit.User)
+            {
+                string[] controlNames = {"IdG", "UsernameG", "RoleG", "Close", "Edit" };
+                string[] controlTypes = {"TextBox", "TextBox",  "ComboBox", "Button", "Button" };
+                string[] comboBoxItems = { "User", "Admin" };
+                editForm.GenerateForm(controlNames, controlTypes, comboBoxItems, rowData);
+            }
+            if (selectedEdit == SelectedEdit.Employee)
+            {
+                string[] controlNames = { "EmployeeIdG", "JobG", "FirstNameG", "LastnameG", "BirthDayG", "EmailG", "Phone NumberG", "Close", "Edit" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "TextBox", "Button", "Button" };
+                editForm.GenerateForm(controlNames, controlTypes, null, rowData);
+            }
+            if (selectedEdit == SelectedEdit.Work)
+            {
+                string[] controlNames = { "WorkIdG", "NameG", "DescriptionG", "Close", "Edit" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "Button", "Button" };
+                editForm.GenerateForm(controlNames, controlTypes, null, rowData);
+            } 
+            editForm.Show();
+        }
         private void buttonDownload_Click(object sender, EventArgs e)
         {
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
@@ -218,5 +253,6 @@ namespace Halcyon
                 listView.SelectedItems[0].Remove();
             }
         }
+
     }
 }

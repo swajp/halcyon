@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -11,18 +10,18 @@ using System.Windows.Forms;
 
 namespace Halcyon
 {
-    public partial class AddForm : Form
+    public partial class EditForm : Form
     {
         UIActions actions;
         private string selectedEdit;
         private List<string> textBoxValues = new List<string>();
-        public AddForm(string selectedEdit)
+        public EditForm(string selectedEdit)
         {
             InitializeComponent();
             actions = new UIActions();
             this.selectedEdit = selectedEdit;
         }
-        public void GenerateForm(string[] controlNames, string[] controlTypes, string[]? comboBoxItems)
+        public void GenerateForm(string[] controlNames, string[] controlTypes, string[]? comboBoxItems, List<string> rowData)
         {
             int y = 10;
             for (int i = 0; i < controlNames.Length; i++)
@@ -40,12 +39,26 @@ namespace Halcyon
                 switch (controlTypes[i])
                 {
                     case "TextBox":
+
                         control = new TextBox();
+                        control.Text = rowData[i];
+                        if (i == 0)
+                        {
+                            control.Enabled = false;
+                        }
+
                         break;
                     case "ComboBox":
                         control = new ComboBox();
+                        if (rowData[i] == "1")
+                        {
+                            control.Text = "Admin";
+                        }
+                        else
+                        {
+                            control.Text = "User";
+                        }
                         ((ComboBox)control).Items.AddRange(comboBoxItems);
-                        control.Text = comboBoxItems[0];
                         break;
                     case "Button":
                         control = new Button();
@@ -60,49 +73,26 @@ namespace Halcyon
                             {
                                 Close();
                             }
-                            if (buttonName == "Add")
+                            if (buttonName == "Edit")
                             {
-                                Add();
+                                Edit();
                             }
                         };
                         break;
                     case "DateTimePicker":
                         control = new DateTimePicker();
                         break;
-                    // add other types here
                     default:
                         throw new ArgumentException(controlTypes[i]);
                 }
                 control.Location = new Point(120, y);
                 control.Size = new Size(150, 20);
                 this.Controls.Add(control);
-
-                if (control is TextBox)
-                {
-                    ((TextBox)control).TextChanged += (sender, e) =>
-                    {
-                        TextBox textBox = (TextBox)sender;
-                        int index = Array.IndexOf(controlNames, textBox.Name);
-                        if (index >= 0)
-                        {
-                            if (textBoxValues.Count > index)
-                            {
-                                textBoxValues[index] = textBox.Text;
-                            }
-                            else
-                            {
-                                textBoxValues.Add(textBox.Text);
-                            }
-                        }
-                    };
-                }
-
                 y += 30;
                 AutoSizeForm();
             }
         }
-
-        private void Add()
+        private void Edit()
         {
             List<string> data = new List<string>();
 
@@ -122,10 +112,9 @@ namespace Halcyon
                 }
             }
 
-            SqlRepository.AddRecord(selectedEdit, data);
+            SqlRepository.EditRecord(selectedEdit, data);
             this.Hide();
         }
-
         private void Close(object sender, EventArgs e)
         {
             actions.CancelForm(this);

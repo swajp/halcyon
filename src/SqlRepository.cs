@@ -208,5 +208,109 @@ namespace Halcyon
                 sqlConnection.Close();
             }
         }
+
+        public static void AddRecord(string selectedEdit, List<string> data)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                if (selectedEdit == "Users")
+                {
+                    byte[] salt, hash;
+
+                    HMACSHA512 hmac = new HMACSHA512();
+
+                    hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(data[1]));
+                    salt = hmac.Key;
+
+                    string query = "INSERT INTO Users (Username, PasswordHash, PasswordSalt, RoleId) VALUES (@value1, @hash, @salt, @value2)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[2]);
+                        command.Parameters.AddWithValue("hash", hash);
+                        command.Parameters.AddWithValue("salt", salt);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                if (selectedEdit == "Works")
+                {
+                    string query = "INSERT INTO Works (Name, Description) VALUES (@value1, @value2)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[1]);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else if (selectedEdit == "Employees")
+                {
+                    string query = "INSERT INTO Employees (Job, FirstName, LastName, BirthDate, Email, PhoneNumber) VALUES (@value1, @value2, @value3, @value4, @value5, @value6)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[1]);
+                        command.Parameters.AddWithValue("@value3", data[2]);
+                        command.Parameters.AddWithValue("@value4", Convert.ToDateTime(data[3]));
+                        command.Parameters.AddWithValue("@value5", data[4]);
+                        command.Parameters.AddWithValue("@value6", data[5]);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+        public static void EditRecord(string selectedEdit, List<string> data)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                if (selectedEdit == "Users")
+                {
+                    string query = "UPDATE Users SET Username=@value2, RoleId=@value3 WHERE Id=@value1";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[1]);
+                        if (data[2] == "1")
+                        {
+                            command.Parameters.AddWithValue("@value3", 1);
+                        }
+                        else if (data[2] == "0")
+                        {
+                            command.Parameters.AddWithValue("@value3", 0);
+                        }
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else if (selectedEdit == "Employees")
+                {
+                    string query = "UPDATE Employees SET Job=@value2, FirstName=@value3, LastName=@value4, BirthDate=@value5, Email=@value6, PhoneNumber=@value7 WHERE EmployeeId=@value1";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);//id
+                        command.Parameters.AddWithValue("@value2", data[1]);//job
+                        command.Parameters.AddWithValue("@value3", data[2]);//first
+                        command.Parameters.AddWithValue("@value4", data[3]);//last
+                        command.Parameters.AddWithValue("@value5", Convert.ToDateTime(data[4]));//brith
+                        command.Parameters.AddWithValue("@value6", data[5]);//email
+                        command.Parameters.AddWithValue("@value7", data[6]);//phonen
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else if (selectedEdit == "Works")
+                {
+                    string query = "UPDATE Works SET Name=@value2, Description=@value3  WHERE WorkId=@value1";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[1]);
+                        command.Parameters.AddWithValue("@value3", data[2]);
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
     }
 }
