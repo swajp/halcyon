@@ -121,7 +121,7 @@ namespace Halcyon
                     data.Add((control as DateTimePicker).Value.ToString());
                 }
             }
-
+            DialogResult = DialogResult.OK;
             SqlRepository.AddRecord(selectedEdit, data);
             this.Hide();
         }

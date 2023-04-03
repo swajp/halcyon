@@ -33,7 +33,6 @@
             this.buttonClose = new System.Windows.Forms.Button();
             this.buttonMinimize = new System.Windows.Forms.Button();
             this.panelMoving = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.panelProfile = new System.Windows.Forms.Panel();
             this.buttonLogout = new System.Windows.Forms.Button();
             this.buttonChangePassword = new System.Windows.Forms.Button();
@@ -132,7 +131,6 @@
             // panelMoving
             // 
             this.panelMoving.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.panelMoving.Controls.Add(this.label5);
             this.panelMoving.Controls.Add(this.panel4);
             this.panelMoving.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelMoving.Location = new System.Drawing.Point(0, 0);
@@ -140,16 +138,6 @@
             this.panelMoving.Size = new System.Drawing.Size(1090, 38);
             this.panelMoving.TabIndex = 1;
             this.panelMoving.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelMoving_MouseDown);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(35, 9);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(57, 21);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "label5";
             // 
             // panelProfile
             // 
@@ -368,11 +356,11 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label8.Location = new System.Drawing.Point(63, 16);
+            this.label8.Location = new System.Drawing.Point(75, 15);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(76, 15);
+            this.label8.Size = new System.Drawing.Size(48, 15);
             this.label8.TabIndex = 0;
-            this.label8.Text = "Admin Panel";
+            this.label8.Text = "Actions";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // listView
@@ -467,7 +455,6 @@
             this.Text = "MainForm";
             this.panel4.ResumeLayout(false);
             this.panelMoving.ResumeLayout(false);
-            this.panelMoving.PerformLayout();
             this.panelProfile.ResumeLayout(false);
             this.panelProfile.PerformLayout();
             this.panelChangePassword.ResumeLayout(false);
@@ -505,7 +492,6 @@
         private Button buttonRemoveRecord;
         private Button buttonAddRecord;
         private Label label4;
-        private Label label5;
         private Panel panelChangePassword;
         private Button buttonShowPassword;
         private TextBox textBoxOldPassword;

@@ -18,7 +18,7 @@ namespace Halcyon
         private List<User> users;
 
         bool show = false;
-
+        string role;
         static class SelectedEdit
         {
             public const string User = "Users";
@@ -36,14 +36,21 @@ namespace Halcyon
 
             //Load labels
             labelUsername.Text = user.Username;
-            labelRole.Text = "Admin";
+            labelRole.Text = "";
 
+            role = user.Role.ToString(); ;
 
-            selectedEdit = SelectedEdit.User;
-            List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
-            SqlRepository.GetData("Users", columnNames,listView);
+            if (role == "1")
+            {
+                selectedEdit = SelectedEdit.User;
+                LoadBySelect();
 
-
+            }
+            else if (role == "0")
+            {
+                selectedEdit = SelectedEdit.Employee;
+                LoadBySelect();
+            }
         }
         public AdminForm()
         {
@@ -88,34 +95,62 @@ namespace Halcyon
         private void buttonManageContracts_Click(object sender, EventArgs e)
         {
             selectedEdit = SelectedEdit.Contract;
-            //LoadBySelect();
+            LoadBySelect();
 
         }
         public void LoadBySelect()
         {
+            if (role == "1")
+            {
+                if (selectedEdit == SelectedEdit.User)
+                {
+                    List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
+                    SqlRepository.GetData("Users", columnNames, listView);
+                    buttonEditRecord.Enabled = true;
+                }
+                else if (selectedEdit == SelectedEdit.Employee)
+                {
+                    List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
+                    SqlRepository.GetData("Employees", columnNames, listView);
+                    buttonEditRecord.Enabled = true;
+                }
+                else if (selectedEdit == SelectedEdit.Contract)
+                {
+                    List<string> columnNames = new List<string> { "ContractId", "Works", "Employees", "CustomerName", "DateAdded", "NumberOfHours" };
+                    SqlRepository.GetData("Contract", columnNames, listView);
+                    buttonEditRecord.Enabled = false;
 
-            if (selectedEdit == SelectedEdit.User)
-            {
-                List<string> columnNames = new List<string> { "Id", "Username", "RoleId" };
-                SqlRepository.GetData("Users", columnNames, listView);
+                }
+                else if (selectedEdit == SelectedEdit.Work)
+                {
+                    selectedEdit = SelectedEdit.Work;
+                    List<string> columnNames = new List<string> { "WorkId", "Name", "Description" };
+                    SqlRepository.GetData("Works", columnNames, listView);
+                    buttonEditRecord.Enabled = true;
+                }
             }
-            else if (selectedEdit == SelectedEdit.Employee)
+            else if (role == "0")
             {
-                List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
-                SqlRepository.GetData("Employees", columnNames, listView);
-            }
-            else if (selectedEdit == SelectedEdit.Contract)
-            {
-                //List<string> columnNames = new List<string> { "EmployeeId", "Job", "FirstName", "LastName", "BirthDate", "Email", "PhoneNumber" };
-                //SqlRepository.GetData("Employees", columnNames, listView);
+                buttonManageUsers.Enabled = false;
+                buttonManageEmployees.Enabled = false;
 
+                if (selectedEdit == SelectedEdit.Contract)
+                {
+                    List<string> columnNames = new List<string> { "ContractId", "Works", "Employees", "CustomerName", "DateAdded", "NumberOfHours" };
+                    SqlRepository.GetData("Contract", columnNames, listView);
+                    buttonEditRecord.Enabled = false;
+
+                }
+                else if (selectedEdit == SelectedEdit.Work)
+                {
+                    selectedEdit = SelectedEdit.Work;
+                    List<string> columnNames = new List<string> { "WorkId", "Name", "Description" };
+                    SqlRepository.GetData("Works", columnNames, listView);
+                    buttonEditRecord.Enabled = true;
+                    buttonAddRecord.Enabled = false;
+                }
             }
-            else if (selectedEdit == SelectedEdit.Work)
-            {
-                selectedEdit = SelectedEdit.Work;
-                List<string> columnNames = new List<string> { "WorkId", "Name", "Description" };
-                SqlRepository.GetData("Works", columnNames, listView);
-            }
+            
         }
         private void buttonChangePassword_Click(object sender, EventArgs e)
         {
@@ -173,6 +208,7 @@ namespace Halcyon
                 string[] controlTypes = { "TextBox", "TextBox", "ComboBox", "Button", "Button" };
                 string[] comboBoxItems = { "User", "Admin" };
                 addForm.GenerateForm(controlNames, controlTypes, comboBoxItems);
+
             }
             else if (selectedEdit == SelectedEdit.Employee)
             {
@@ -182,8 +218,8 @@ namespace Halcyon
             }
             else if (selectedEdit == SelectedEdit.Contract)
             {
-                string[] controlNames = { "Contract NameG", "DescriptionG", "StatusG", "WorkerG", "TimeG", "Close", "Add" };
-                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "TextBox", "DateTimePicker", "Button", "Button" };
+                string[] controlNames = { "WorkIdG", "EmployeeIdG", "CustomerG", "DateAddedG", "HoursG", "Close", "Add" };
+                string[] controlTypes = { "TextBox", "TextBox", "TextBox", "DateTimePicker", "TextBox", "Button", "Button" };
                 addForm.GenerateForm(controlNames, controlTypes, null);
             }
             else if (selectedEdit == SelectedEdit.Work)
@@ -192,7 +228,9 @@ namespace Halcyon
                 string[] controlTypes = { "TextBox", "TextBox", "Button", "Button" };
                 addForm.GenerateForm(controlNames, controlTypes, null);
             }
-            addForm.Show();
+            var result = addForm.ShowDialog();
+            if (result == DialogResult.OK)
+                LoadBySelect();
         }
         private void buttonEditRecord_Click(object sender, EventArgs e)
         {
@@ -225,7 +263,9 @@ namespace Halcyon
                 string[] controlTypes = { "TextBox", "TextBox", "TextBox", "Button", "Button" };
                 editForm.GenerateForm(controlNames, controlTypes, null, rowData);
             } 
-            editForm.Show();
+            var result = editForm.ShowDialog();
+            if (result == DialogResult.OK)
+                LoadBySelect();
         }
         private void buttonDownload_Click(object sender, EventArgs e)
         {

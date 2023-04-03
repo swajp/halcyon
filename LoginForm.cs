@@ -14,10 +14,6 @@ namespace Halcyon
     public partial class LoginForm : Form
     {
         UIActions actions;
-
-        string heslo = "fdjgdfj";
-
-
         public LoginForm()
         {
             InitializeComponent();
@@ -56,8 +52,9 @@ namespace Halcyon
                     }
                     else if (user.Role == (int)SqlRepository.Roles.USER)
                     {
-                        //UserForm userForm = new UserForm(user);
-                        //userForm.Show();
+                        this.Hide();
+                        AdminForm adminForm = new AdminForm(user);
+                        adminForm.Show();
                     }
                  
                 }

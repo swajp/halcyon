@@ -95,7 +95,6 @@ namespace Halcyon
                         if (reader.Read())
                         {
                             user = new User((int)reader["Id"],reader["Username"].ToString(), (byte[])reader["PasswordHash"], (byte[])reader["PasswordSalt"], (int)reader["RoleId"]);
-                            //user.Roles = GetRoles(user);
                         }
                     }
                 }
@@ -241,6 +240,19 @@ namespace Halcyon
                     {
                         command.Parameters.AddWithValue("@value1", data[0]);
                         command.Parameters.AddWithValue("@value2", data[1]);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                else if (selectedEdit == "Contracts")
+                {
+                    string query = "INSERT INTO Contract (Works, Employees, CustomerName, DateAdded, NumberOfHours) VALUES (@value1, @value2, @value3, @value4, @value5)";
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@value1", data[0]);
+                        command.Parameters.AddWithValue("@value2", data[1]);
+                        command.Parameters.AddWithValue("@value3", data[2]);
+                        command.Parameters.AddWithValue("@value4", Convert.ToDateTime(data[3]));
+                        command.Parameters.AddWithValue("@value5", data[4]);
                         command.ExecuteNonQuery();
                     }
                 }
